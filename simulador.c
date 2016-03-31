@@ -1,7 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int confere(double massa1, double massa2, double massau){
+int confereNegativo(float x){
+    if(x <= 0){
+        return 1;
+        printf("\nDigite um valor maior e diferente de zero!");
+    }else{
+        return 0;
+    }
+}
+double arrumaFloat(double x){
+    x = (double)((int)(x*100));
+    x= x/100;
+    return x;
+}
+void confere(float massa1, float massa2, float massau){
 
     if(massau == massa2){
 
@@ -12,20 +25,18 @@ int confere(double massa1, double massa2, double massau){
         erro();
     }
 }
-
-int acerto(){
-
-    printf("Massa correta, o carrinho conseguiu subir com sucesso\n");
-    printf("Precione [ENTER] para continuar\n");
+void acerto(){
+    printf("Pressione [ENTER] para continuar\n");
     getch();
 }
-int erro(){
+void erro(){
+
     char sair;
 
     //sair = NULL;
 
-    printf("Massa errada, o carrinho nao conseguiu chegar ao topo com sucesso\n");
-    printf("Precione [S] para tentar novamente ou [N] para sair\n");
+    printf("Valor invalido.\n");
+    printf("Pressione [S] para tentar novamente ou [N] para sair\n");
 
     //getch();
     fflush(stdin);
@@ -36,63 +47,104 @@ int erro(){
         main();
 
     }else{
-
-
         exit(0);
 
     }
 }
-
+void confereCoef(double coefU, double coefI){
+    if(coefI == coefU){
+            acerto();
+            printf("Você acertou!");
+        }else{
+            erro();
+        }
+}
 int main(){
-    double massa1, massa2, velo,altura, massau, g;
+    float massa1 = 0, massa2 = 0, velo = 0, altura = 0, massau = 0, g = 0;
+    double coefAtritoU, coefAtritoI;
 
     g = 10;
-    massa1 = 10;
 
     printf("\t\t\t Simulador de Energia mecanica\n");
+    printf("**digite apenas valores com duas casas decimais.\n");
 
+    while(confereNegativo(altura)){
+        printf("\nInsira a altura inicial: \n");
+        scanf("%f", &altura);
+        altura = arrumaFloat(altura);
+    }
 
-    printf("Insira a altura inicial: \n");
-    scanf("%lf", &altura);
+    while(confereNegativo(massa1)){
+        printf("\nDigite a massa inicial: \n");
+        scanf("%f", &massa1);
+        massa1 = arrumaFloat(massa1);
+    }
 
-
-    //velocidade A para B
+    //Velocidade A para B
     velo = sqrt(2*g*altura);
 
-    //energia de B para C
+    //Energia de B para C
     massa2 = ((massa1*(velo*velo)/2)/(g*((5*altura)/4)));
+    massa2 = arrumaFloat(massa2);
 
     //scanea e confere valor usuario
-    printf("Insira a massa do carro no ponto B: \n");
-    scanf("%lf", &massau);
+    while(confereNegativo(massau)){
+        printf("\nInsira a massa do carro no ponto B:");
+        scanf("%f", &massau);
+        massau = arrumaFloat(massau);
+    }
     confere(massa1, massa2, massau);
+
 ///////////////////////////////////////////////////////////////////////
 
-    //velocidade C para D
-    velo = sqrt((5*altura)/4);
+    //Velocidade C para D
+    velo = sqrt(2*g*((5*altura)/4));
 
-    //energia de D para E
+    //Energia de D para E
     massa2 = ((massa1*(velo*velo)/2)/(g*((3*altura)/4)));
+    massa2 = arrumaFloat(massa2);
 
     //scanea e confere valor usuario
-    printf("Insira a massa do carro no ponto D: \n");
-    scanf("%lf", &massau);
+    massau = 0;
+    while(confereNegativo(massau)){
+        printf("\nInsira a massa do carro no ponto D:\n");
+        scanf("%f", &massau);
+    }
+
     confere(massa1, massa2, massau);
 
 ////////////////////////////////////////////////////////////////////////
 
-    //velocidade C para D
-    velo = sqrt((3*altura)/4);
+    //Velocidade C para D
+    velo = sqrt(2*g*((3*altura)/4));
 
-    //energia de D para E
+    //Energia de D para E
     massa2 = ((massa1*(velo*velo)/2)/(g*(altura/2)));
+    massa2 = arrumaFloat(massa2);
 
     //scanea e confere valor usuario
-    printf("Insira a massa do carro no ponto F: \n");
-    scanf("%lf", &massau);
+    massau = 0;
+    while(confereNegativo(massau)){
+        printf("Insira a massa do carro no ponto F: \n");
+        scanf("%f", &massau);
+    }
     confere(massa1, massa2, massau);
 
+////////////////////////////////////////////////////////////////////////
 
+    //velocidade de G para H
+    velo = sqrt(2*g*((3*altura)/8));
 
+    coefAtritoI = velo/(6*g);
+    coefAtritoI = arrumaFloat(coefAtritoI);
+    printf("\nCoef correto: %.2f", coefAtritoI);
+
+    while(confereNegativo(coefAtritoU)){
+        printf("\nDigite o valor do coeficiente de atrito:");
+        scanf("%lf", &coefAtritoU);
+    }
+    confereCoef(coefAtritoU, coefAtritoI);
+    printf("\nFIM DE JOGO!");
+    return 0;
 
 }
